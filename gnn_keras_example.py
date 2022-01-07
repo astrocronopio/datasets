@@ -1,12 +1,17 @@
-import os
-import pandas as pd
-import numpy as np
-import networkx as nx
-import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 
+
+def create_ffn(hidden_units, dropout_rate, name=None):
+    fnn_layers = []
+
+    for units in hidden_units:
+        fnn_layers.append(layers.BatchNormalization())
+        fnn_layers.append(layers.Dropout(dropout_rate))
+        fnn_layers.append(layers.Dense(units, activation=tf.nn.gelu))
+
+    return keras.Sequential(fnn_layers, name=name)
 
 class GraphConvLayer(layers.Layer):
     def __init__(
@@ -109,13 +114,6 @@ class GraphConvLayer(layers.Layer):
         aggregated_messages = self.aggregate(node_indices, neighbour_messages)
         # Update the node embedding with the neighbour messages.
         return self.update(node_repesentations, aggregated_messages)
-      
-      
-      
-      
-   
- 
-
 
 
 class GNNNodeClassifier(tf.keras.Model):
@@ -186,4 +184,3 @@ class GNNNodeClassifier(tf.keras.Model):
         node_embeddings = tf.gather(x, input_node_indices)
         # Compute logits
         return self.compute_logits(node_embeddings)
-
