@@ -1,4 +1,4 @@
-# Datasets from Kaggle
+# Resources for HU ML für Physiker classes
 
 ## Higgs Small Dataset with SVM
 
